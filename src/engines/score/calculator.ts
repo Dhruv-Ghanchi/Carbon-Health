@@ -80,7 +80,7 @@ export const calculateCarbonHealthScore = (input: ScoreInput): ScoreResult => {
   
   const baselineInt = Math.round(baselineContribution);
   const trendInt = Math.round(trendContribution);
-  let actionInt = 0;
+  let actionInt: number;
 
   if (input.assignedActions === 0) {
     // Newbie Proration: Score out of 60, scaled to 100

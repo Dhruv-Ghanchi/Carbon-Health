@@ -45,7 +45,7 @@ export default function Progress() {
 
         <AppCard className="flex flex-col items-center justify-center text-center p-6 bg-gradient-to-br from-carbon-50 to-white">
           <Calendar className="w-8 h-8 text-blue-500 mb-2" />
-          <div className="text-3xl font-bold text-gray-900">{Math.round(completionRate)}%</div>
+          <div className="text-3xl font-bold text-gray-900">{completionRate}%</div>
           <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">Completion Rate</div>
         </AppCard>
       </div>

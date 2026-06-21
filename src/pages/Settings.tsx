@@ -8,12 +8,12 @@ export default function Settings() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
-  const handleReset = () => {
-    if (window.confirm("Are you sure you want to delete all local data? This action cannot be undone.")) {
-      localStorage.clear();
-      window.location.href = '/Carbon-Health/#/onboarding';
-      window.location.reload();
-    }
+  const [showResetModal, setShowResetModal] = useState(false);
+
+  const handleConfirmReset = () => {
+    localStorage.clear();
+    window.location.href = '/Carbon-Health/#/onboarding';
+    window.location.reload();
   };
 
   return (
@@ -105,7 +105,7 @@ export default function Settings() {
             </div>
           </AppCard>
 
-          <AppCard className="border-red-100 bg-red-50/30">
+          <AppCard className="border-red-100 bg-red-50/30 relative">
             <h3 className="text-lg font-bold text-red-700 mb-2 flex items-center gap-2">
               <AlertTriangle className="w-5 h-5" />
               Danger Zone
@@ -113,9 +113,27 @@ export default function Settings() {
             <p className="text-sm text-gray-600 mb-6">
               Permanently delete all your assessment data, active missions, and historical progress. This will reset the application to its initial state.
             </p>
-            <Button variant="outline" className="border-red-200 text-red-600 hover:bg-red-50" onClick={handleReset}>
+            <Button variant="outline" className="border-red-200 text-red-600 hover:bg-red-50" onClick={() => setShowResetModal(true)}>
               <Trash2 className="w-4 h-4 mr-2" /> Reset Local Data
             </Button>
+            
+            {showResetModal && (
+              <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+                  <div className="flex items-center gap-3 text-red-600 mb-4">
+                    <AlertTriangle className="w-6 h-6" />
+                    <h2 className="text-xl font-bold">Reset All Data?</h2>
+                  </div>
+                  <p className="text-gray-600 mb-6">
+                    Are you sure you want to delete all local data? This action cannot be undone and you will lose all your progress and history.
+                  </p>
+                  <div className="flex gap-3 justify-end">
+                    <Button variant="outline" onClick={() => setShowResetModal(false)}>Cancel</Button>
+                    <Button className="bg-red-600 hover:bg-red-700 text-white border-transparent" onClick={handleConfirmReset}>Yes, Reset Data</Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </AppCard>
 
         </div>

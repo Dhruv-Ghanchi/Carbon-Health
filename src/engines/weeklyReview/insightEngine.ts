@@ -67,20 +67,20 @@ export const generateInsights = (inputs: WeeklyReviewInputs): { insights: Review
 
   const achievementsArr: string[] = [];
   const risksArr: { id: string; text: string; severity: 'LOW' | 'MEDIUM' | 'HIGH' }[] = [];
-  let riskCounter = 1;
+
 
   if (scoreTrend === 'IMPROVING') achievementsArr.push('Score Improved');
   if (scoreTrend === 'DECLINING') {
-    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${riskCounter++}`, text: 'Score Declined', severity: 'LOW' });
+    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${risksArr.length + 1}`, text: 'Score Declined', severity: 'LOW' });
   }
   if (footprintTrend === 'DECLINING') {
-    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${riskCounter++}`, text: 'Footprint Increased', severity: 'LOW' });
+    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${risksArr.length + 1}`, text: 'Footprint Increased', severity: 'LOW' });
   }
 
   if (engagementTrend === 'DECLINING') {
     const diff = (previousSummary?.engagementRate ?? 0) - currentSummary.engagementRate;
     if (diff > REVIEW_CONSTANTS.RISK_ENGAGEMENT_DROP) {
-      risksArr.push({ id: `risk_${currentSummary.weekEnd}_${riskCounter++}`, text: 'Significant Engagement Drop', severity: 'MEDIUM' });
+      risksArr.push({ id: `risk_${currentSummary.weekEnd}_${risksArr.length + 1}`, text: 'Significant Engagement Drop', severity: 'MEDIUM' });
     }
   }
 
@@ -89,7 +89,7 @@ export const generateInsights = (inputs: WeeklyReviewInputs): { insights: Review
   }
 
   if (currentSummary.checkInCount === 0) {
-    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${riskCounter++}`, text: 'Zero Check-ins', severity: 'HIGH' });
+    risksArr.push({ id: `risk_${currentSummary.weekEnd}_${risksArr.length + 1}`, text: 'Zero Check-ins', severity: 'HIGH' });
   }
 
   return {

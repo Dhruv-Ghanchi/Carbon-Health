@@ -46,9 +46,10 @@ export const generateRecommendations = (
 
   // 2. Priority Scoring & Sorting
   const ranked: Recommendation[] = validItems.map(item => {
-    const { isFeasible, ...rest } = item;
+    const rec = { ...item };
+    delete (rec as { isFeasible?: unknown }).isFeasible;
     return {
-      ...rest,
+      ...rec,
       priorityScore: calculatePriority(item, assessment, user)
     };
   }).sort((a, b) => (b.priorityScore - a.priorityScore) || a.id.localeCompare(b.id));

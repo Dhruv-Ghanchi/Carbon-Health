@@ -3,6 +3,7 @@ import { calculateCarbonHealthScore } from '../../engines/score/calculator';
 import { generateRecommendations } from '../../engines/recommendation/ranking';
 import { calculateBenchmark } from '../../engines/score/benchmark';
 import { calculateForecast } from '../../engines/calculation/forecast';
+import { formatEquivalentsText } from '../../engines/calculation/equivalents';
 import type { UserProfile, CarbonAssessment, Mission, DailyCheckIn } from '../../types';
 
 export function buildDashboardSnapshot(
@@ -21,12 +22,28 @@ export function buildDashboardSnapshot(
   };
   const scoreOutput = calculateCarbonHealthScore(scoreInput);
 
+  const completedReduction = completedMissions.reduce((acc, m) => acc + (m.targetReduction || 0), 0);
+  const projectedFootprint = Math.max(0, footprint.totalFootprint - completedReduction);
+
+  const impactMetrics = {
+    baselineFootprint: footprint.totalFootprint,
+    completedReduction: Number(completedReduction.toFixed(2)),
+    projectedFootprint: Number(projectedFootprint.toFixed(2))
+  };
+
   const progressSummary = {
     currentStreak: dailyCheckIns.filter(c => c.completed).length,
     longestStreak: dailyCheckIns.filter(c => c.completed).length
   };
 
-  const topRecommendations = generateRecommendations(assessment, profile).slice(0, 3);
+  const existingRecommendationIds = new Set([
+    ...activeMissions.map(m => m.id),
+    ...completedMissions.map(m => m.id)
+  ]);
+
+  const topRecommendations = generateRecommendations(assessment, profile)
+    .filter(rec => !existingRecommendationIds.has(rec.id))
+    .slice(0, 3);
 
   const benchmark = calculateBenchmark(scoreOutput.carbonHealthScore);
 
@@ -51,9 +68,12 @@ export function buildDashboardSnapshot(
     }
   }
 
+  const equivalentsText = formatEquivalentsText(footprint.totalFootprint);
+
   const footprintInsights = {
     highestCategory,
-    highestPercentage
+    highestPercentage,
+    equivalentsText
   };
 
   return {
@@ -65,6 +85,7 @@ export function buildDashboardSnapshot(
     activeMissions,
     benchmark,
     forecast,
-    footprintInsights
+    footprintInsights,
+    impactMetrics
   };
 }

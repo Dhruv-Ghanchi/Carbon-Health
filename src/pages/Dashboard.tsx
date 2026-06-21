@@ -1,5 +1,6 @@
 import { useDashboardQuery } from '../application/queries/useDashboardQuery';
 import { useDashboardSnapshot } from '../application/snapshots/useDashboardSnapshot';
+import type { Recommendation } from '../engines/recommendation/types';
 import { MetricCard } from '../components/ui/MetricCard';
 import { AppCard } from '../components/ui/AppCard';
 import { SectionHeader } from '../components/ui/SectionHeader';
@@ -21,9 +22,9 @@ export default function Dashboard() {
     return <SkeletonDashboard />;
   }
 
-  const { footprint, scoreOutput, topRecommendations, activeMissions, narrative, benchmark, forecast } = dashboard;
+  const { footprint, scoreOutput, topRecommendations, activeMissions, narrative, benchmark, forecast, impactMetrics } = dashboard;
 
-  const handleAcceptRecommendation = (rec: any) => {
+  const handleAcceptRecommendation = (rec: Recommendation) => {
     acceptRecommendationCommand(rec);
   };
 
@@ -63,18 +64,21 @@ export default function Dashboard() {
         />
 
         <MetricCard
-          title="Total Footprint"
+          title="Current Footprint"
           icon={<Flame className="w-5 h-5 text-orange-500" />}
           value={
             <div className="flex items-baseline gap-1">
-              {footprint.totalFootprint} <span className="text-base text-gray-500 font-medium">kg CO₂</span>
+              {impactMetrics?.projectedFootprint ?? footprint.totalFootprint} <span className="text-base text-gray-500 font-medium">kg CO₂</span>
             </div>
           }
           subtitle={
-            <span className="flex gap-2">
-              <span>Personal: <b className="text-gray-900">{footprint.personalEmissions}</b></span>
-              <span>Shared: <b className="text-gray-900">{footprint.sharedEmissions}</b></span>
-            </span>
+            <div className="flex flex-col gap-1">
+              <span className="flex gap-2 text-sm">
+                <span>Baseline: <b className="text-gray-900">{impactMetrics?.baselineFootprint ?? footprint.totalFootprint}</b></span>
+                <span className="text-green-600">Reduced: <b className="text-green-700">{impactMetrics?.completedReduction ?? 0}</b></span>
+              </span>
+              <span className="text-xs text-gray-500 mt-1">{dashboard.footprintInsights?.equivalentsText}</span>
+            </div>
           }
         />
 

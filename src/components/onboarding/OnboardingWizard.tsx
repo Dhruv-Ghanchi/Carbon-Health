@@ -109,9 +109,9 @@ const QUESTIONS = [
 
 export default function OnboardingWizard({ onComplete }: WizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, string | number>>({});
 
-  const handleSelect = (questionId: string, value: any) => {
+  const handleSelect = (questionId: string, value: string | number) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 

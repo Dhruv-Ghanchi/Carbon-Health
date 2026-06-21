@@ -53,10 +53,10 @@ export function DidYouKnowCarousel() {
             ))}
           </div>
           <div className="flex gap-2">
-            <button onClick={prev} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+            <button onClick={prev} aria-label="Previous insight" className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <button onClick={next} className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+            <button onClick={next} aria-label="Next insight" className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

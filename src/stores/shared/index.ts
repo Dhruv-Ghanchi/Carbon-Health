@@ -12,6 +12,8 @@ export interface HydrationState {
 }
 
 export const omitHydration = <T extends HydrationState>(state: T): Omit<T, '_hasHydrated' | 'setHasHydrated'> => {
-  const { _hasHydrated, setHasHydrated, ...rest } = state;
+  const rest = { ...state };
+  delete (rest as unknown as { _hasHydrated?: unknown })._hasHydrated;
+  delete (rest as unknown as { setHasHydrated?: unknown }).setHasHydrated;
   return rest;
 };

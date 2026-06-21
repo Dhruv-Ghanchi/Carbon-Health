@@ -30,7 +30,7 @@ export function FootprintChart({ breakdown }: FootprintChartProps) {
 
   return (
     <div className="h-64 w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="99%" height={250}>
         <PieChart>
           <Pie
             data={data}
@@ -45,10 +45,7 @@ export function FootprintChart({ breakdown }: FootprintChartProps) {
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip 
-            formatter={(value: any) => [`${Math.round(value)} kg CO₂`, 'Emissions']}
-            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.1)' }}
-          />
+          <Tooltip formatter={(value: any) => [`${value} kg CO₂`, '']} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.1)' }} />
           <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px' }} />
         </PieChart>
       </ResponsiveContainer>

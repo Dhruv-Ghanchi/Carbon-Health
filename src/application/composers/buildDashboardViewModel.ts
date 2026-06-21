@@ -18,7 +18,8 @@ export function buildDashboardViewModel(
       narrative: intelligence.narrative,
       benchmark: { percentileRank: 10, percentileText: 'Bottom 40%', explanation: '' },
       forecast: { projectedFootprint: 0, projectedReduction: 0, confidenceLevel: 'LOW' as const, explanation: '' },
-      footprintInsights: { highestCategory: '', highestPercentage: 0 }
+      footprintInsights: { highestCategory: '', highestPercentage: 0, equivalentsText: '' },
+      impactMetrics: { baselineFootprint: 0, completedReduction: 0, projectedFootprint: 0 }
     };
   }
 

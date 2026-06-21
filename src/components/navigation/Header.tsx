@@ -1,7 +1,9 @@
-import { useUserStore } from '../../stores';
+import { useProfileQuery } from '../../application/queries/useProfileQuery';
+import { useProfileSnapshot } from '../../application/snapshots/useProfileSnapshot';
 
 export function Header() {
-  const profile = useUserStore(state => state.profile);
+  const rawState = useProfileQuery();
+  const { profile } = useProfileSnapshot(rawState);
 
   return (
     <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0">

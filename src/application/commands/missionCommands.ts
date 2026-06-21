@@ -1,5 +1,6 @@
 import { useMissionStore, useProgressStore } from '../../stores';
-import type { Recommendation, Mission } from '../../types';
+import type { Mission } from '../../types';
+import type { Recommendation } from '../../engines/recommendation/types';
 
 export function acceptRecommendationCommand(recommendation: Recommendation) {
   const newMission: Mission = {
@@ -9,7 +10,7 @@ export function acceptRecommendationCommand(recommendation: Recommendation) {
     category: recommendation.category,
     difficulty: recommendation.difficulty,
     targetReduction: recommendation.estimatedReduction,
-    status: 'active' as any, // active status
+    status: 'in_progress',
     missionType: 'one_time', // default
     streakCount: 0,
     createdAt: new Date().toISOString()

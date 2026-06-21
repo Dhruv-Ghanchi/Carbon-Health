@@ -2,6 +2,7 @@ import { useDashboardQuery } from '../application/queries/useDashboardQuery';
 import { useDashboardSnapshot } from '../application/snapshots/useDashboardSnapshot';
 import { useProgressQuery } from '../application/queries/useProgressQuery';
 import { useProgressSnapshot } from '../application/snapshots/useProgressSnapshot';
+import { useProfileSnapshot } from '../application/snapshots/useProfileSnapshot';
 import { SectionHeader } from '../components/ui/SectionHeader';
 import { AppCard } from '../components/ui/AppCard';
 import { MetricCard } from '../components/ui/MetricCard';
@@ -14,7 +15,9 @@ export default function Profile() {
   const rawProgressState = useProgressQuery();
   const progressSnapshot = useProgressSnapshot(rawProgressState);
 
-  const { profile, assessment } = dashboard.isReady ? rawState : { profile: null, assessment: null };
+  const profileSnapshot = useProfileSnapshot(rawState);
+  const { profile, motivationLabel } = profileSnapshot;
+  const assessment = dashboard.isReady ? rawState.assessment : null;
   const { scoreOutput, footprint, benchmark, forecast } = dashboard;
   const { streakMetrics, completedMissions } = progressSnapshot;
 
@@ -54,7 +57,7 @@ export default function Profile() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b border-gray-100 pb-2">
                 <span className="text-gray-500">Motivation</span>
-                <span className="font-semibold text-gray-900 capitalize">{profile.motivationLevel}</span>
+                <span className="font-semibold text-gray-900">{motivationLabel}</span>
               </div>
               <div className="flex justify-between border-b border-gray-100 pb-2">
                 <span className="text-gray-500">Transport</span>
