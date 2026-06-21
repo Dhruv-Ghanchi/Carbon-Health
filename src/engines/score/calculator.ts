@@ -98,6 +98,37 @@ export const calculateCarbonHealthScore = (input: ScoreInput): ScoreResult => {
   const carbonHealthScore = Math.max(0, Math.min(100, baselineInt + trendInt + actionInt));
   const statusLevel = getCarbonLevel(carbonHealthScore);
 
+  let nextTier: CarbonLevelString | undefined;
+  let nextTierBound: number | undefined;
+  let currentTierBound: number = 0;
+
+  if (carbonHealthScore < LEVEL_THRESHOLDS.ECO_EXPLORER) {
+    nextTier = 'Eco Explorer';
+    nextTierBound = LEVEL_THRESHOLDS.ECO_EXPLORER;
+    currentTierBound = LEVEL_THRESHOLDS.CARBON_BEGINNER;
+  } else if (carbonHealthScore < LEVEL_THRESHOLDS.GREEN_GUARDIAN) {
+    nextTier = 'Green Guardian';
+    nextTierBound = LEVEL_THRESHOLDS.GREEN_GUARDIAN;
+    currentTierBound = LEVEL_THRESHOLDS.ECO_EXPLORER;
+  } else if (carbonHealthScore < LEVEL_THRESHOLDS.CLIMATE_CHAMPION) {
+    nextTier = 'Climate Champion';
+    nextTierBound = LEVEL_THRESHOLDS.CLIMATE_CHAMPION;
+    currentTierBound = LEVEL_THRESHOLDS.GREEN_GUARDIAN;
+  }
+
+  let pointsToNextTier: number | undefined;
+  let progressPercentage: number | undefined;
+
+  if (nextTierBound !== undefined && nextTier) {
+    pointsToNextTier = nextTierBound - carbonHealthScore;
+    const range = nextTierBound - currentTierBound;
+    const progress = carbonHealthScore - currentTierBound;
+    progressPercentage = Math.round((progress / range) * 100);
+  } else {
+    // Already max tier
+    progressPercentage = 100;
+  }
+
   return {
     carbonHealthScore,
     statusLevel,
@@ -105,6 +136,9 @@ export const calculateCarbonHealthScore = (input: ScoreInput): ScoreResult => {
       baselineContribution: baselineInt,
       trendContribution: trendInt,
       actionContribution: actionInt,
-    }
+    },
+    nextTier,
+    pointsToNextTier,
+    progressPercentage,
   };
 };

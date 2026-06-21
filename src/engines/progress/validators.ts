@@ -1,9 +1,10 @@
 import { ProgressValidationError } from './types';
 import type { DailyCheckIn } from './types';
 
-export const normalizeISOToDate = (isoString: string): string => {
+export const normalizeISOToDate = (isoString: string | undefined): string => {
   // ISO string is format YYYY-MM-DDTHH:mm:ss.sssZ
   // If already YYYY-MM-DD, returns itself
+  if (!isoString) return '';
   return isoString.split('T')[0];
 };
 

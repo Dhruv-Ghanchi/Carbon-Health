@@ -17,6 +17,9 @@ export interface ScoreResult {
   carbonHealthScore: number;
   statusLevel: CarbonLevelString;
   explanation: ScoreExplanation;
+  pointsToNextTier?: number;
+  progressPercentage?: number;
+  nextTier?: CarbonLevelString;
 }
 
 export class ValidationError extends Error {

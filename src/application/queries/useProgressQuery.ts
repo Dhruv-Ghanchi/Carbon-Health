@@ -3,7 +3,10 @@ import { useShallow } from 'zustand/react/shallow';
 
 export const useProgressQuery = () => {
   const { dailyCheckIns } = useProgressStore(useShallow(state => ({ dailyCheckIns: state.dailyCheckIns })));
-  const { completedMissions } = useMissionStore(useShallow(state => ({ completedMissions: state.completedMissions })));
+  const { completedMissions, activeMissions } = useMissionStore(useShallow(state => ({ 
+    completedMissions: state.completedMissions,
+    activeMissions: state.activeMissions
+  })));
 
-  return { dailyCheckIns, completedMissions };
+  return { dailyCheckIns, completedMissions, activeMissions };
 };
